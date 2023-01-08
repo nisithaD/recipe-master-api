@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::resource('user', UserController::class);
-    Route::get('/favourite//user/{user_id}', [FavouriteController::class, 'userFavourites']);
+    Route::get('/favourite/user/{user_id}', [FavouriteController::class, 'userFavourites']);
 });
 
 Route::resource('food-recipe', FoodRecipeController::class);
