@@ -22,5 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/favourite/user/{user_id}', [FavouriteController::class, 'userFavourites']);
 });
 
-Route::resource('food-recipe', FoodRecipeController::class);
+Route::resource('/food-recipe', FoodRecipeController::class);
 
