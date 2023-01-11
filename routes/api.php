@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::resource('user', UserController::class);
     Route::get('/favourite/user/{user_id}', [FavouriteController::class, 'userFavourites']);
+    Route::post('/favourite/add/{recipe_id}', [FavouriteController::class, 'addToFavorite']);
 });
 
 Route::resource('/food-recipe', FoodRecipeController::class);
