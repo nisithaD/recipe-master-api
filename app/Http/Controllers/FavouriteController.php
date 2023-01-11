@@ -20,6 +20,7 @@ class FavouriteController extends Controller
     {
         $favourites = QueryBuilder::for(Favourite::class)
             ->where('user_id', Auth::id())
+            ->with('foodRecipe')
             ->get();
 
         return DataResource::collection($favourites);
@@ -31,6 +32,17 @@ class FavouriteController extends Controller
             'user_id' => Auth::id(),
             'food_recipe_id' => $recipe_id,
         ]);
+
+        return response()->json([
+            'status' => 200,
+        ], 200);
+    }
+
+    public function removeFromFavorite($recipe_id): JsonResponse
+    {
+        Favourite::class::where('user_id', Auth::id())
+            ->where('food_recipe_id', $recipe_id)
+            ->delete();
 
         return response()->json([
             'status' => 200,
