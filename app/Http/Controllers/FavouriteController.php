@@ -6,7 +6,6 @@ use App\Http\Resources\DataResource;
 use App\Models\Favourite;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class FavouriteController extends Controller
@@ -19,7 +18,7 @@ class FavouriteController extends Controller
     public function userFavourites(): AnonymousResourceCollection
     {
         $favourites = QueryBuilder::for(Favourite::class)
-            ->where('user_id', Auth::id())
+            ->where('user_id', auth('sanctum')->user()->id)
             ->with('foodRecipe')
             ->get();
 
@@ -29,7 +28,7 @@ class FavouriteController extends Controller
     public function addToFavorite($recipe_id): JsonResponse
     {
         Favourite::class::create([
-            'user_id' => Auth::id(),
+            'user_id' => auth('sanctum')->user()->id,
             'food_recipe_id' => $recipe_id,
         ]);
 
@@ -40,7 +39,7 @@ class FavouriteController extends Controller
 
     public function removeFromFavorite($recipe_id): JsonResponse
     {
-        Favourite::class::where('user_id', Auth::id())
+        Favourite::class::where('user_id', auth('sanctum')->user()->id)
             ->where('food_recipe_id', $recipe_id)
             ->delete();
 

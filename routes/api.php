@@ -4,7 +4,6 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\FoodRecipeController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,10 +18,12 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('/register', [AuthController::class, 'createUser']);
 Route::post('/login', [AuthController::class, 'loginUser']);
+Route::post('/logout', [AuthController::class, 'logoutUser'])->middleware('auth:sanctum');
 
 Route::resource('/food-recipe', FoodRecipeController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/auth_user', [UserController::class, 'authUser']);
     Route::get('/favourite/user/{user_id}', [FavouriteController::class, 'userFavourites']);
     Route::post('/favourite/add/{recipe_id}', [FavouriteController::class, 'addToFavorite']);
     Route::get('/favourite/remove/{recipe_id}', [FavouriteController::class, 'removeFromFavorite']);
