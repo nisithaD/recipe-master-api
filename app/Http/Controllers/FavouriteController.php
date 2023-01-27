@@ -27,14 +27,27 @@ class FavouriteController extends Controller
 
     public function addToFavorite($recipe_id): JsonResponse
     {
-        Favourite::class::create([
-            'user_id' => auth('sanctum')->user()->id,
-            'food_recipe_id' => $recipe_id,
-        ]);
+        $favourite = Favourite::where('user_id', auth('sanctum')->user()->id)
+            ->where('food_recipe_id', $recipe_id)
+            ->first();
+        if ($favourite) {
+            $favourite = Favourite::where('user_id', auth('sanctum')->user()->id)
+                ->where('food_recipe_id', $recipe_id)
+                ->delete();
+            return response()->json([
+                'message' => 'Successfully removed from favourite',
+            ], 200);
+        }
+        else {
+            Favourite::class::create([
+                'user_id' => auth('sanctum')->user()->id,
+                'food_recipe_id' => $recipe_id,
+            ]);
 
-        return response()->json([
-            'status' => 200,
-        ], 200);
+            return response()->json([
+                'status' => 200,
+            ], 200);
+        }
     }
 
     public function removeFromFavorite($recipe_id): JsonResponse
